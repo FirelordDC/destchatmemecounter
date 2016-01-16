@@ -1,0 +1,26 @@
+{
+    "manifest_version": 2,
+    
+    "name": "Destiny Chat Meme Counter",
+    "version": "0.1",
+    "permissions":[
+        "storage"
+    ],
+    "background":{
+        "scripts":["Chart.min.js","customChart.js"]
+    },
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [
+    {
+    "matches":[
+        "*://*.destiny.gg/*"
+    ],
+    "js": ["jquery-2.2.0.min.js",
+           "content.js"]
+    }
+]
+}
