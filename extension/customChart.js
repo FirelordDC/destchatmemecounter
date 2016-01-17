@@ -46,6 +46,7 @@ setInterval(function(){
     console.log("messagesPerMin ="+ messagesPerMin);
     document.getElementById("messPerMin").innerHTML = messagesPerMin;
     makeEmoteList();
+    makeUserList();
 }, 1000);
 
 
@@ -53,6 +54,7 @@ var prevMessNum=0;
 var curMessNum=0;
 var mainDate;
 var locEmoteArray=[];
+var locUserArray=[];
 
 function updateMessCount()
 {
@@ -92,6 +94,34 @@ function updateEmoteArray()
     }
 });
     console.log(locEmoteArray);
+}
+
+function makeUserList()
+{
+    updateUserArray();
+    sortUserArray();
+    var tempString = "<table>"
+    for(i=0;i<locUserArray.length;i++)
+    {
+        tempString += "<tr><td>"+(i+1)+".</td><td>"+locUserArray[i].name+"</td><td>    "+locUserArray[i].count+"</td><tr>";
+    }
+    tempString += "</talbe>";
+    document.getElementById("userRanks").innerHTML = tempString;
+}
+function sortUserArray()
+{
+    locUserArray.sort(function(a,b){return b.count -a.count});
+}
+function updateUserArray()
+{
+    chrome.storage.local.get("userArray", function(data) {
+    if(typeof data.userArray == "undefined") {
+        // That's kind of bad
+    } else {
+        locUserArray=data.userArray;
+    }
+});
+    console.log(locUserArray);
 }
 
 chrome.storage.local.get("startDate", function(data) {

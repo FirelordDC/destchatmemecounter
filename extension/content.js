@@ -23,6 +23,12 @@ var observer = new MutationObserver(function(mutations) {
                  chrome.storage.local.set({emoteArray: emoteArray});
                  console.log(emoteArray);
              }
+               if(mainNode.getElementsByClassName("chat-user").length > 0)
+             {
+                 userCounter(mainNode);
+                 chrome.storage.local.set({userArray: userArray});
+                 console.log(userArray);
+             }
          }
              if(mainNode.className == "emotecount")
          {
@@ -40,6 +46,7 @@ observer.observe(document, {
 });
 var lastCombo;
 var emoteArray = [];
+var userArray =[];
 function emoteCounter(currentNode)
 {   
     if (currentNode.className == "chat-msg")
@@ -56,6 +63,31 @@ function emoteCounter(currentNode)
         nonChatMsgCounter(currentNode);
     }
 }
+
+function userCounter(currentNode)
+{
+    var currentObj = {
+        name : "meme",
+        count : 0
+    };
+    var x = currentNode.getElementsByClassName("chat-user");
+    console.log("# user"+x.length);
+    for(t=0;t<x.length;t++)
+    {
+        var lineNode = x.item(t);
+        currentObj.name = lineNode.innerHTML;
+        currentObj.count = 1;
+        var tempArrayLoc = existUserArray(currentObj.name);
+        if(tempArrayLoc === null)
+        {
+            userArray.push(currentObj);
+        }else
+        {
+            userArray[tempArrayLoc].count ++;
+        }
+    }
+}
+
 function nonChatMsgCounter(currentNode)
 {
     var currentObj = {
@@ -80,6 +112,18 @@ function nonChatMsgCounter(currentNode)
     }
 }
 function existEmoteArray(name)
+    {
+        for (i=0; i<emoteArray.length; i++)
+        {
+            if(emoteArray[i].name === name)
+            {
+                return i;
+            }
+        }
+        return null;
+    }
+
+function existUserArray(name)
     {
         for (i=0; i<emoteArray.length; i++)
         {
