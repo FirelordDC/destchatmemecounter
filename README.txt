@@ -9,4 +9,6 @@ Gives the Total Messages since entering chatroom and the Message Per Minute of t
 
 Provides a table displaying all emotes used in chat, and the Number of times they have been used since you entered the chatroom. *may not be accurate due to combos
 
+Also Provides the a table of every user mentioned in chat, currently doesn't count shorten names like RTBA or C_C 
+
  
