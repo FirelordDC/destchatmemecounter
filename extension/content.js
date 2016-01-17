@@ -125,9 +125,10 @@ function existEmoteArray(name)
 
 function existUserArray(name)
     {
-        for (i=0; i<emoteArray.length; i++)
+        console.log(name);
+        for (i=0; i<userArray.length; i++)
         {
-            if(emoteArray[i].name === name)
+            if(userArray[i].name == name)
             {
                 return i;
             }
