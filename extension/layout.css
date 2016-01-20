@@ -1,0 +1,8 @@
+#leftDiv {
+    width: 50%;
+    display: inline-block;
+}
+#rightDiv{
+    width: 50%;
+    display: inline-block;
+}
