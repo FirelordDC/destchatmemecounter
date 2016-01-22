@@ -47,6 +47,9 @@ observer.observe(document, {
 var lastCombo;
 var emoteArray = [];
 var userArray =[];
+var userDic ={};
+var emoteDic ={};
+
 function emoteCounter(currentNode)
 {   
     if (currentNode.className == "chat-msg")
@@ -81,6 +84,7 @@ function userCounter(currentNode)
         if(tempArrayLoc === null)
         {
             userArray.push(currentObj);
+            userDic[currentObj.name] = (userArray.length -1);
         }else
         {
             userArray[tempArrayLoc].count ++;
@@ -105,6 +109,7 @@ function nonChatMsgCounter(currentNode)
         if(tempArrayLoc === null)
         {
             emoteArray.push(currentObj);
+            emoteDic[currentObj.name] = (emoteArray.length -1);
         }else
         {
             emoteArray[tempArrayLoc].count ++;
@@ -113,26 +118,19 @@ function nonChatMsgCounter(currentNode)
 }
 function existEmoteArray(name)
     {
-        for (i=0; i<emoteArray.length; i++)
-        {
-            if(emoteArray[i].name === name)
+    if(typeof emoteDic[name] !=  "undefined")
             {
-                return i;
+                return emoteDic[name];
             }
-        }
         return null;
     }
 
 function existUserArray(name)
     {
-        console.log(name);
-        for (i=0; i<userArray.length; i++)
-        {
-            if(userArray[i].name == name)
+        if(typeof userDic[name] !=  "undefined")
             {
-                return i;
+                return userDic[name];
             }
-        }
         return null;
     }
                                                         
