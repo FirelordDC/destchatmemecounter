@@ -20,14 +20,14 @@ var observer = new MutationObserver(function(mutations) {
               if(mainNode.getElementsByClassName("chat-emote").length > 0)
              {
                  emoteCounter(mainNode);
-                 chrome.storage.local.set({emoteArray: emoteArray});
-                 console.log(emoteArray);
+                 chrome.storage.local.set({emoteDic: emoteDic});
+                 console.log(emoteDic);
              }
                if(mainNode.getElementsByClassName("chat-user").length > 0)
              {
                  userCounter(mainNode);
-                 chrome.storage.local.set({userArray: userArray});
-                 console.log(userArray);
+                 chrome.storage.local.set({userDic: userDic});
+                 //console.log(userArray);
              }
          }
              if(mainNode.className == "emotecount")
@@ -45,8 +45,8 @@ observer.observe(document, {
   //...
 });
 var lastCombo;
-var emoteArray = [];
-var userArray =[];
+//var emoteArray = [];
+//var userArray =[];
 var userDic ={};
 var emoteDic ={};
 
@@ -54,12 +54,14 @@ function emoteCounter(currentNode)
 {   
     if (currentNode.className == "chat-msg")
     {
-        var tempArrayLoc = existEmoteArray(currentNode.getElementsByClassName("chat-emote").item(0).getAttribute("title"));
+        var name =currentNode.getElementsByClassName("chat-emote").item(0).getAttribute("title");
+        //var tempArrayLoc = existEmoteArray(currentNode.getElementsByClassName("chat-emote").item(0).getAttribute("title"));
         if(lastCombo != tempArrayLoc)
         {
             lastCombo = tempArrayLoc;
         }
-        emoteArray[tempArrayLoc].count ++;
+      //  emoteArray[tempArrayLoc].count ++;
+        emoteDic[name].count++;
     }
     else
     {
@@ -77,19 +79,29 @@ function userCounter(currentNode)
     console.log("# user"+x.length);
     for(t=0;t<x.length;t++)
     {
+       // var userArrayPos = userArray.length;
         var lineNode = x.item(t);
         currentObj.name = lineNode.innerHTML;
         currentObj.count = 1;
-        var tempArrayLoc = existUserArray(currentObj.name);
+        if(typeof userDic[currentObj.name] !=  "undefined")
+        {
+                userDic[currentObj.name].count ++;
+        }
+        else
+        {
+            userDic[currentObj.name] = currentObj;
+        }
+        console.log(userDic);
+/*        var tempArrayLoc = existUserArray(currentObj.name);
         if(tempArrayLoc === null)
         {
             userArray.push(currentObj);
-            userDic[currentObj.name] = (userArray.length -1);
+            userDic[currentObj.name] = userArrayPos;
             console.log(userDic);
         }else
         {
             userArray[tempArrayLoc].count ++;
-        }
+        }*/
     }
 }
 
@@ -103,43 +115,22 @@ function nonChatMsgCounter(currentNode)
     console.log("# emotes"+x.length);
     for(t=0;t<x.length;t++)
     {
+       // var emoteArrayPos = emoteArray.length;
         var lineNode = x.item(t);
         currentObj.name = lineNode.getAttribute("title");
         currentObj.count = 1;
-        var tempArrayLoc = existEmoteArray(currentObj.name);
-        if(tempArrayLoc === null)
+          if(typeof emoteDic[currentObj.name] !=  "undefined")
         {
-            emoteArray.push(currentObj);
-            emoteDic[currentObj.name] = (emoteArray.length -1);
-            console.log(emoteDic);
-        }else
-        {
-            emoteArray[tempArrayLoc].count ++;
+                emoteDic[currentObj.name].count ++;
         }
+        else
+        {
+            emoteDic[currentObj.name] = currentObj;
+        }
+        console.log(emoteDic);
     }
-}
-function existEmoteArray(name)
-    {
-    if(typeof emoteDic[name] !=  "undefined")
-            {
-                console.log(name +"is at"+emoteDic[name]);
-                return emoteDic[name];
-            }
-         console.log(name +" does not exist");
-        return null;
-    }
-
-function existUserArray(name)
-    {
-        if(typeof userDic[name] !=  "undefined")
-            {
-                console.log(name +"is at"+userDic[name]);
-                return userDic[name];
-            }
-            console.log(name +" does not exist");
-        return null;
-    }
-                                                        
+    
+}                                            
                                                              
 
 

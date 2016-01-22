@@ -55,7 +55,8 @@ var curMessNum=0;
 var mainDate;
 var locEmoteArray=[];
 var locUserArray=[];
-
+var locUserDic ={};
+var locEmoteDic = {};
 function updateMessCount()
 {
     chrome.storage.local.get("count", function(data) {
@@ -70,7 +71,8 @@ function updateMessCount()
 
 function makeEmoteList()
 {
-    updateEmoteArray();
+    updateEmoteDic();
+     updateLocEmoteArray();
     console.log(locEmoteArray);
     sortEmoteArray();
     var tempString = "<table>"
@@ -85,20 +87,35 @@ function sortEmoteArray()
 {
     locEmoteArray.sort(function(a,b){return b.count -a.count});
 }
-function updateEmoteArray()
+function updateEmoteDic()
 {
-    chrome.storage.local.get("emoteArray", function(data) {
-    if(typeof data.emoteArray == "undefined") {
+    chrome.storage.local.get("emoteDic", function(data) {
+    if(typeof data.emoteDic == "undefined") {
         // That's kind of bad
     } else {
-        locEmoteArray=data.emoteArray;
+        locEmoteDic=data.emoteDic;
+        console.log(locEmoteDic);
     }
 });
 }
 
+function updateLocEmoteArray()
+{
+    locEmoteArray =[];
+    for(var obj in locEmoteDic)
+        {
+            console.log(obj);
+            if(locEmoteDic.hasOwnProperty(obj))
+                {
+                    locEmoteArray.push(locEmoteDic[obj]);
+                }
+        }
+}
+
 function makeUserList()
 {
-    updateUserArray();
+    updateUserDic();
+    updateLocUserArray();
      console.log(locUserArray);
     sortUserArray();
     var tempString = "<table>"
@@ -113,15 +130,28 @@ function sortUserArray()
 {
     locUserArray.sort(function(a,b){return b.count -a.count});
 }
-function updateUserArray()
+function updateUserDic()
 {
-    chrome.storage.local.get("userArray", function(data) {
-    if(typeof data.userArray == "undefined") {
+    chrome.storage.local.get("userDic", function(data) {
+    if(typeof data.userDic == "undefined") {
         // That's kind of bad
     } else {
-        locUserArray=data.userArray;
+        locUserDic=data.userDic;
+        console.log(locUserDic);
     }
 });
+}
+function updateLocUserArray()
+{
+    locUserArray =[];
+    for(var obj in locUserDic)
+        {
+            console.log(obj);
+            if(locUserDic.hasOwnProperty(obj))
+                {
+                    locUserArray.push(locUserDic[obj]);
+                }
+        }
 }
 
 chrome.storage.local.get("startDate", function(data) {
