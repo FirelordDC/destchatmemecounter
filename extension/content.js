@@ -15,7 +15,7 @@ var observer = new MutationObserver(function(mutations) {
          if(mainNode.className == "user-msg"||mainNode.className == "user-msg continue"||mainNode.className == "chat-msg")
          {
              messNum ++;
-             console.log(messNum);
+             //console.log(messNum);
              chrome.storage.local.set({count: messNum});
               if(mainNode.getElementsByClassName("chat-emote").length > 0)
              {
@@ -85,6 +85,7 @@ function userCounter(currentNode)
         {
             userArray.push(currentObj);
             userDic[currentObj.name] = (userArray.length -1);
+            console.log(userDic);
         }else
         {
             userArray[tempArrayLoc].count ++;
@@ -110,6 +111,7 @@ function nonChatMsgCounter(currentNode)
         {
             emoteArray.push(currentObj);
             emoteDic[currentObj.name] = (emoteArray.length -1);
+            console.log(emoteDic);
         }else
         {
             emoteArray[tempArrayLoc].count ++;
@@ -120,8 +122,10 @@ function existEmoteArray(name)
     {
     if(typeof emoteDic[name] !=  "undefined")
             {
+                console.log(name +"is at"+emoteDic[name]);
                 return emoteDic[name];
             }
+         console.log(name +" does not exist");
         return null;
     }
 
@@ -129,8 +133,10 @@ function existUserArray(name)
     {
         if(typeof userDic[name] !=  "undefined")
             {
+                console.log(name +"is at"+userDic[name]);
                 return userDic[name];
             }
+            console.log(name +" does not exist");
         return null;
     }
                                                         

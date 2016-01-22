@@ -71,6 +71,7 @@ function updateMessCount()
 function makeEmoteList()
 {
     updateEmoteArray();
+    console.log(locEmoteArray);
     sortEmoteArray();
     var tempString = "<table>"
     for(i=0;i<locEmoteArray.length;i++)
@@ -93,12 +94,12 @@ function updateEmoteArray()
         locEmoteArray=data.emoteArray;
     }
 });
-    console.log(locEmoteArray);
 }
 
 function makeUserList()
 {
     updateUserArray();
+     console.log(locUserArray);
     sortUserArray();
     var tempString = "<table>"
     for(i=0;i<locUserArray.length;i++)
@@ -121,7 +122,6 @@ function updateUserArray()
         locUserArray=data.userArray;
     }
 });
-    console.log(locUserArray);
 }
 
 chrome.storage.local.get("startDate", function(data) {
