@@ -32,7 +32,8 @@ var observer = new MutationObserver(function(mutations) {
          }
              if(mainNode.className == "emotecount")
          {
-               emoteArray[lastCombo].count ++;
+               emoteDic[lastCombo].count ++;
+              chrome.storage.local.set({emoteDic: emoteDic});
                 console.log("wow");
          }
      }
@@ -56,12 +57,12 @@ function emoteCounter(currentNode)
     {
         var name =currentNode.getElementsByClassName("chat-emote").item(0).getAttribute("title");
         //var tempArrayLoc = existEmoteArray(currentNode.getElementsByClassName("chat-emote").item(0).getAttribute("title"));
-        if(lastCombo != tempArrayLoc)
+        if(lastCombo != name)
         {
-            lastCombo = tempArrayLoc;
+            lastCombo = name;
         }
       //  emoteArray[tempArrayLoc].count ++;
-        emoteDic[name].count++;
+        emoteDic[lastCombo].count++;
     }
     else
     {
