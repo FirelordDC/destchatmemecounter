@@ -74,14 +74,10 @@ function makeEmoteList()
     updateEmoteDic();
      updateLocEmoteArray();
     console.log(locEmoteArray);
-    if(locEmoteArray>1)
+    if(locEmoteArray.length>1)
         {
     sortEmoteArray();
         }
-       if(locEmoteArray[locEmoteArray.length-1] == 0)
-                {
-                    locEmoteArray.pop();
-                }
     var tempString = "<table>"
     for(i=0;i<locEmoteArray.length;i++)
     {
@@ -96,7 +92,6 @@ function sortEmoteArray()
 }
 function updateEmoteDic()
 {
-    locEmoteDic.length =0;
     chrome.storage.local.get("emoteDic", function(data) {
     if(typeof data.emoteDic == "undefined") {
         // That's kind of bad
@@ -116,6 +111,10 @@ function updateLocEmoteArray()
             if(locEmoteDic.hasOwnProperty(obj))
                 {
                     locEmoteArray.push(locEmoteDic[obj]);
+                      if(locEmoteArray[locEmoteArray.length-1] === null)
+                {
+                    locEmoteArray.pop();
+                }
                 }
         }
 }
@@ -130,10 +129,6 @@ function makeUserList()
     sortUserArray();
           
         }
-      if(locUserArray[locUserArray.length-1] == 0)
-                {
-                    locUserArray.pop();
-                }
     var tempString = "<table>"
     for(i=0;i<locUserArray.length;i++)
     {
@@ -148,7 +143,6 @@ function sortUserArray()
 }
 function updateUserDic()
 {
-    locUserDic.length = 0;
     chrome.storage.local.get("userDic", function(data) {
     if(typeof data.userDic == "undefined") {
         // That's kind of bad
@@ -167,6 +161,10 @@ function updateLocUserArray()
             if(locUserDic.hasOwnProperty(obj))
                 {
                     locUserArray.push(locUserDic[obj]);
+                     if(locUserArray[locUserArray.length-1] === null)
+                {
+                    locUserArray.pop();
+                }
                 }
         }
 }
