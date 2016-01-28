@@ -2,7 +2,7 @@
     "manifest_version": 2,
     
     "name": "Destiny Chat Meme Counter",
-    "version": "0.3",
+    "version": "0.4",
     "permissions":[
         "storage"
     ],

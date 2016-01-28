@@ -1,8 +1,12 @@
 #leftDiv {
-    width: 50%;
+    width: 33%;
+    display: inline-block;
+}
+#midDiv{
+    width: 33%;
     display: inline-block;
 }
 #rightDiv{
-    width: 50%;
+    width: 33%;
     display: inline-block;
 }

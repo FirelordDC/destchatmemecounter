@@ -11,4 +11,6 @@ Provides a table displaying all emotes used in chat, and the Number of times the
 
 Also Provides the a table of every user mentioned in chat, currently doesn't count shorten names like RTBA or C_C 
 
+0.4: Now Provides a table of number of time a user enters a message into chat, when a user's message is a part of a combo it may not be counted.
+
  

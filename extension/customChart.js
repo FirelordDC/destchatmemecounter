@@ -47,6 +47,7 @@ setInterval(function(){
     document.getElementById("messPerMin").innerHTML = messagesPerMin;
     makeEmoteList();
     makeUserList();
+    makeChaterList();
 }, 1000);
 
 
@@ -55,8 +56,10 @@ var curMessNum=0;
 var mainDate;
 var locEmoteArray=[];
 var locUserArray=[];
+var locChaterArray = [];
 var locUserDic ={};
 var locEmoteDic = {};
+var locChaterDic = {};
 function updateMessCount()
 {
     chrome.storage.local.get("count", function(data) {
@@ -73,7 +76,7 @@ function makeEmoteList()
 {
     updateEmoteDic();
      updateLocEmoteArray();
-    console.log(locEmoteArray);
+   // console.log(locEmoteArray);
     if(locEmoteArray.length>1)
         {
     sortEmoteArray();
@@ -97,7 +100,7 @@ function updateEmoteDic()
         // That's kind of bad
     } else {
         locEmoteDic=data.emoteDic;
-        console.log(locEmoteDic);
+       // console.log(locEmoteDic);
     }
 });
 }
@@ -107,7 +110,7 @@ function updateLocEmoteArray()
     locEmoteArray.length=0;
     for(var obj in locEmoteDic)
         {
-            console.log(obj);
+            //console.log(obj);
             if(locEmoteDic.hasOwnProperty(obj))
                 {
                     locEmoteArray.push(locEmoteDic[obj]);
@@ -123,7 +126,7 @@ function makeUserList()
 {
     updateUserDic();
     updateLocUserArray();
-     console.log(locUserArray);
+    // console.log(locUserArray);
     if(locUserArray.length>1)
         {
     sortUserArray();
@@ -148,7 +151,7 @@ function updateUserDic()
         // That's kind of bad
     } else {
         locUserDic=data.userDic;
-        console.log(locUserDic);
+       // console.log(locUserDic);
     }
 });
 }
@@ -157,13 +160,63 @@ function updateLocUserArray()
     locUserArray.length =0;
     for(var obj in locUserDic)
         {
-            console.log(obj);
+            //console.log(obj);
             if(locUserDic.hasOwnProperty(obj))
                 {
                     locUserArray.push(locUserDic[obj]);
                      if(locUserArray[locUserArray.length-1] === null)
                 {
                     locUserArray.pop();
+                }
+                }
+        }
+}
+
+function makeChaterList()
+{
+    updateChaterDic();
+    updateLocChaterArray();
+    // console.log(locChaterArray);
+    if(locChaterArray.length>1)
+        {
+    sortChaterArray();
+          
+        }
+    var tempString = "<table>"
+    for(i=0;i<locChaterArray.length;i++)
+    {
+        tempString += "<tr><td>"+(i+1)+".</td><td>"+locChaterArray[i].name+"</td><td>    "+locChaterArray[i].count+"</td><tr>";
+    }
+    tempString += "</talbe>";
+    document.getElementById("chaterRanks").innerHTML = tempString;
+}
+function sortChaterArray()
+{
+    locChaterArray.sort(function(a,b){return b.count -a.count});
+}
+function updateChaterDic()
+{
+    chrome.storage.local.get("chaterDic", function(data) {
+    if(typeof data.chaterDic == "undefined") {
+        // That's kind of bad
+    } else {
+        locChaterDic=data.chaterDic;
+        //console.log(locChaterDic);
+    }
+});
+}
+function updateLocChaterArray()
+{
+    locChaterArray.length =0;
+    for(var obj in locChaterDic)
+        {
+           // console.log(obj);
+            if(locChaterDic.hasOwnProperty(obj))
+                {
+                    locChaterArray.push(locChaterDic[obj]);
+                     if(locChaterArray[locChaterArray.length-1] === null)
+                {
+                    locChaterArray.pop();
                 }
                 }
         }

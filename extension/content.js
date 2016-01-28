@@ -17,6 +17,8 @@ var observer = new MutationObserver(function(mutations) {
              messNum ++;
              //console.log(messNum);
              chrome.storage.local.set({count: messNum});
+             chaterCounter(mainNode);
+              chrome.storage.local.set({chaterDic: chaterDic});
               if(mainNode.getElementsByClassName("chat-emote").length > 0)
              {
                  emoteCounter(mainNode);
@@ -50,6 +52,28 @@ var lastCombo;
 //var userArray =[];
 var userDic ={};
 var emoteDic ={};
+var chaterDic ={};
+function chaterCounter(currentNode)
+{
+    var tempData = currentNode.getAttribute("data-username");
+    if(tempData.username !== null)
+        {
+             var currentObj = {
+        name : "meme",
+        count : 0
+        };
+            currentObj.name = tempData;
+            currentObj.count = 1;
+            if(typeof chaterDic[currentObj.name] != "undefined")
+                {
+                    chaterDic[currentObj.name].count ++;
+                }else
+                    {
+                        chaterDic[currentObj.name]=currentObj;
+                    }
+            //console.log(chaterDic);
+        }
+}
 
 function emoteCounter(currentNode)
 {   
@@ -92,7 +116,7 @@ function userCounter(currentNode)
         {
             userDic[currentObj.name] = currentObj;
         }
-        console.log(userDic);
+       // console.log(userDic);
 /*        var tempArrayLoc = existUserArray(currentObj.name);
         if(tempArrayLoc === null)
         {
@@ -128,7 +152,7 @@ function nonChatMsgCounter(currentNode)
         {
             emoteDic[currentObj.name] = currentObj;
         }
-        console.log(emoteDic);
+        //console.log(emoteDic);
     }
     
 }                                            
