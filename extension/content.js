@@ -1,161 +1,149 @@
-var messNum =0;
+var messNum = 0;
 var dateNow = Date.now();
 console.log(dateNow);
-chrome.storage.local.set({startDate: dateNow});
+chrome.storage.local.set({
+    startDate: dateNow
+});
 //content.js
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
-var observer = new MutationObserver(function(mutations) {
- mutations.forEach(function(mutation) {
-  // console.log(mutation.addedNodes);
-   var mainNode = mutation.addedNodes[0];
-     if(mainNode != null)
-     {
-      console.log(mainNode);
-         if(mainNode.className == "user-msg"||mainNode.className == "user-msg continue"||mainNode.className == "chat-msg")
-         {
-             messNum ++;
-             //console.log(messNum);
-             chrome.storage.local.set({count: messNum});
-             chaterCounter(mainNode);
-              chrome.storage.local.set({chaterDic: chaterDic});
-              if(mainNode.getElementsByClassName("chat-emote").length > 0)
-             {
-                 emoteCounter(mainNode);
-                 chrome.storage.local.set({emoteDic: emoteDic});
-                 console.log(emoteDic);
-             }
-               if(mainNode.getElementsByClassName("chat-user").length > 0)
-             {
-                 userCounter(mainNode);
-                 chrome.storage.local.set({userDic: userDic});
-                 //console.log(userArray);
-             }
-         }
-             if(mainNode.className == "emotecount")
-         {
-               emoteDic[lastCombo].count ++;
-              chrome.storage.local.set({emoteDic: emoteDic});
+var observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+        // console.log(mutation.addedNodes);
+        var mainNode = mutation.addedNodes[0];
+        if (mainNode != null) {
+            console.log(mainNode);
+            if (mainNode.className == "user-msg" || mainNode.className == "user-msg continue" || mainNode.className == "chat-msg") {
+                messNum++;
+                //console.log(messNum);
+                chrome.storage.local.set({
+                    count: messNum
+                });
+                if (mainNode.className != "chat-msg") {
+                    chaterCounter(mainNode);
+                    chrome.storage.local.set({
+                        chaterDic: chaterDic
+                    });
+                }
+                if (mainNode.getElementsByClassName("chat-emote").length > 0) {
+                    emoteCounter(mainNode);
+                    chrome.storage.local.set({
+                        emoteDic: emoteDic
+                    });
+                    console.log(emoteDic);
+                }
+                if (mainNode.getElementsByClassName("chat-user").length > 0) {
+                    userCounter(mainNode);
+                    chrome.storage.local.set({
+                        userDic: userDic
+                    });
+                    //console.log(userArray);
+                }
+            }
+            if (mainNode.className == "emotecount") {
+                emoteDic[lastCombo].count++;
+                chrome.storage.local.set({
+                    emoteDic: emoteDic
+                });
                 console.log("wow");
-         }
-     }
- });
+            }
+        }
+    });
 });
 
 observer.observe(document, {
-  subtree: true,
-  childList: true
-  //...
+    subtree: true,
+    childList: true
+        //...
 });
+
 var lastCombo;
 //var emoteArray = [];
 //var userArray =[];
-var userDic ={};
-var emoteDic ={};
-var chaterDic ={};
-function chaterCounter(currentNode)
-{
+var userDic = {};
+var emoteDic = {};
+var chaterDic = {};
+
+function chaterCounter(currentNode) {
     var tempData = currentNode.getAttribute("data-username");
-    if(tempData.username !== null)
-        {
-             var currentObj = {
-        name : "meme",
-        count : 0
+    if (tempData.username !== null) {
+        var currentObj = {
+            name: "meme",
+            count: 0
         };
-            currentObj.name = tempData;
-            currentObj.count = 1;
-            if(typeof chaterDic[currentObj.name] != "undefined")
-                {
-                    chaterDic[currentObj.name].count ++;
-                }else
-                    {
-                        chaterDic[currentObj.name]=currentObj;
-                    }
-            //console.log(chaterDic);
+        currentObj.name = tempData;
+        currentObj.count = 1;
+        if (typeof chaterDic[currentObj.name] != "undefined") {
+            chaterDic[currentObj.name].count++;
+        } else {
+            chaterDic[currentObj.name] = currentObj;
         }
+        //console.log(chaterDic);
+    }
 }
 
-function emoteCounter(currentNode)
-{   
-    if (currentNode.className == "chat-msg")
-    {
-        var name =currentNode.getElementsByClassName("chat-emote").item(0).getAttribute("title");
+function emoteCounter(currentNode) {
+    if (currentNode.className == "chat-msg") {
+        var name = currentNode.getElementsByClassName("chat-emote").item(0).getAttribute("title");
         //var tempArrayLoc = existEmoteArray(currentNode.getElementsByClassName("chat-emote").item(0).getAttribute("title"));
-        if(lastCombo != name)
-        {
+        if (lastCombo != name) {
             lastCombo = name;
         }
-      //  emoteArray[tempArrayLoc].count ++;
+        //  emoteArray[tempArrayLoc].count ++;
         emoteDic[lastCombo].count++;
-    }
-    else
-    {
+    } else {
         nonChatMsgCounter(currentNode);
     }
 }
 
-function userCounter(currentNode)
-{
+function userCounter(currentNode) {
     var currentObj = {
-        name : "meme",
-        count : 0
+        name: "meme",
+        count: 0
     };
     var x = currentNode.getElementsByClassName("chat-user");
-    console.log("# user"+x.length);
-    for(t=0;t<x.length;t++)
-    {
-       // var userArrayPos = userArray.length;
+    console.log("# user" + x.length);
+    for (t = 0; t < x.length; t++) {
+        // var userArrayPos = userArray.length;
         var lineNode = x.item(t);
         currentObj.name = lineNode.innerHTML;
         currentObj.count = 1;
-        if(typeof userDic[currentObj.name] !=  "undefined")
-        {
-                userDic[currentObj.name].count ++;
-        }
-        else
-        {
+        if (typeof userDic[currentObj.name] != "undefined") {
+            userDic[currentObj.name].count++;
+        } else {
             userDic[currentObj.name] = currentObj;
         }
-       // console.log(userDic);
-/*        var tempArrayLoc = existUserArray(currentObj.name);
-        if(tempArrayLoc === null)
-        {
-            userArray.push(currentObj);
-            userDic[currentObj.name] = userArrayPos;
-            console.log(userDic);
-        }else
-        {
-            userArray[tempArrayLoc].count ++;
-        }*/
+        // console.log(userDic);
+        /*        var tempArrayLoc = existUserArray(currentObj.name);
+                if(tempArrayLoc === null)
+                {
+                    userArray.push(currentObj);
+                    userDic[currentObj.name] = userArrayPos;
+                    console.log(userDic);
+                }else
+                {
+                    userArray[tempArrayLoc].count ++;
+                }*/
     }
 }
 
-function nonChatMsgCounter(currentNode)
-{
+function nonChatMsgCounter(currentNode) {
     var currentObj = {
-        name : "meme",
-        count : 0
+        name: "meme",
+        count: 0
     };
     var x = currentNode.getElementsByClassName("chat-emote");
-    console.log("# emotes"+x.length);
-    for(t=0;t<x.length;t++)
-    {
-       // var emoteArrayPos = emoteArray.length;
+    console.log("# emotes" + x.length);
+    for (t = 0; t < x.length; t++) {
+        // var emoteArrayPos = emoteArray.length;
         var lineNode = x.item(t);
         currentObj.name = lineNode.getAttribute("title");
         currentObj.count = 1;
-          if(typeof emoteDic[currentObj.name] !=  "undefined")
-        {
-                emoteDic[currentObj.name].count ++;
-        }
-        else
-        {
+        if (typeof emoteDic[currentObj.name] != "undefined") {
+            emoteDic[currentObj.name].count++;
+        } else {
             emoteDic[currentObj.name] = currentObj;
         }
         //console.log(emoteDic);
     }
-    
-}                                            
-                                                             
-
-
+}
